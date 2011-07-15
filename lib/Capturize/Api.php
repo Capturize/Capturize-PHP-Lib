@@ -21,10 +21,20 @@ class Capturize_Api {
     private $resize_height;
 
 
-    public function __construct($public_key, $private_key)
+    public function __construct($public_key, $private_key, array $attributes = array())
     {
         $this->public_key = $public_key;
         $this->private_key = $private_key;
+
+        if (isset($attributes["browser_width"]))    $this->setBrowserWidth($attributes["browser_width"]);
+        if (isset($attributes["browser_height"]))   $this->setBrowserHeight($attributes["browser_height"]);
+        if (isset($attributes["quality"]))          $this->setQuality($attributes["quality"]);
+        if (isset($attributes["crop_x"]))           $this->setCropX($attributes["crop_x"]);
+        if (isset($attributes["crop_y"]))           $this->setCropY($attributes["crop_y"]);
+        if (isset($attributes["crop_width"]))       $this->setCropWidth($attributes["crop_width"]);
+        if (isset($attributes["crop_height"]))      $this->setCropHeight($attributes["crop_height"]);
+        if (isset($attributes["resize_width"]))     $this->setResizeWidth($attributes["resize_width"]);
+        if (isset($attributes["resize_height"]))    $this->setResizeHeight($attributes["resize_height"]);
     }
 
     public function setBrowserWidth($browser_width)
@@ -72,7 +82,7 @@ class Capturize_Api {
       $this->resize_height = $resize_height;
     }
 
-    public function getImageUrl($url, $attributes = array())
+    public function getImageUrl($url, array $attributes = array())
     {
         $browser_width      = isset($attributes["browser_width"])  ? $attributes["browser_width"]     : $this->browser_width;
         $browser_height     = isset($attributes["browser_height"]) ? $attributes["browser_height"]    : $this->browser_height;
