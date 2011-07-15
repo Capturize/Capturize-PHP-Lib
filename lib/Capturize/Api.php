@@ -2,7 +2,7 @@
 
 class Capturize_Api {
 
-    const CAPTURIZE_URI = "http://capturize.dev/";
+    const CAPTURIZE_URI = "http://staging.capturize.it/";
 
     private $public_key;
     private $private_key;
@@ -14,11 +14,11 @@ class Capturize_Api {
 
     private $crop_x;
     private $crop_y;
-    private $crop_w;
-    private $crop_h;
+    private $crop_width;
+    private $crop_height;
 
-    private $resize_w;
-    private $resize_h;
+    private $resize_width;
+    private $resize_height;
 
 
     public function __construct($public_key, $private_key)
@@ -52,75 +52,84 @@ class Capturize_Api {
       $this->crop_y = $crop_y;
     }
 
-    public function setCropWidth($crop_w)
+    public function setCropWidth($crop_width)
     {
-      $this->crop_w = $crop_w;
+      $this->crop_width = $crop_width;
     }
 
-    public function setCropHeight($crop_h)
+    public function setCropHeight($crop_height)
     {
-      $this->crop_h = $crop_h;
+      $this->crop_height = $crop_height;
     }
 
-    public function setResizeWidth($resize_w)
+    public function setResizeWidth($resize_width)
     {
-      $this->resize_w = $resize_w;
+      $this->resize_width = $resize_width;
     }
 
-    public function setResizeHeight($resize_h)
+    public function setResizeHeight($resize_height)
     {
-      $this->resize_h = $resize_h;
+      $this->resize_height = $resize_height;
     }
 
-    public function getImageUrl($url)
+    public function getImageUrl($url, $attributes = array())
     {
+        $browser_width      = isset($attributes["browser_width"])  ? $attributes["browser_width"]     : $this->browser_width;
+        $browser_height     = isset($attributes["browser_height"]) ? $attributes["browser_height"]    : $this->browser_height;
+        $quality            = isset($attributes["quality"])        ? $attributes["quality"]           : $this->quality;
+        $crop_x             = isset($attributes["crop_x"])         ? $attributes["crop_x"]            : $this->crop_x;
+        $crop_y             = isset($attributes["crop_y"])         ? $attributes["crop_y"]            : $this->crop_y;
+        $crop_width         = isset($attributes["crop_width"])     ? $attributes["crop_width"]        : $this->crop_width;
+        $crop_height        = isset($attributes["crop_height"])    ? $attributes["crop_height"]       : $this->crop_height;
+        $resize_width       = isset($attributes["resize_width"])   ? $attributes["resize_width"]      : $this->resize_width;
+        $resize_height      = isset($attributes["resize_height"])  ? $attributes["resize_height"]     : $this->resize_height;
+
         $image_url = "url=".$url;
 
-        if ($this->browser_width)
+        if ($browser_width)
         {
-          $image_url .= "&browser_width=".$this->browser_width;
+          $image_url .= "&browser_width=".$browser_width;
         }
 
-        if ($this->browser_height)
+        if ($browser_height)
         {
-          $image_url .= "&browser_height=".$this->browser_height;
+          $image_url .= "&browser_height=".$browser_height;
         }
 
-        if ($this->quality)
+        if ($quality)
         {
-          $image_url .= "&quality=".$this->quality;
+          $image_url .= "&quality=".$quality;
         }
 
-        if ($this->crop_x)
+        if ($crop_x)
         {
-          $image_url .= "&crop_x=".$this->crop_x;
+          $image_url .= "&crop_x=".$crop_x;
         }
 
-        if ($this->crop_y)
+        if ($crop_y)
         {
-          $image_url .= "&crop_y=".$this->crop_y;
+          $image_url .= "&crop_y=".$crop_y;
         }
 
-        if ($this->crop_w)
+        if ($crop_width)
         {
-          $image_url .= "&crop_w=".$this->crop_w;
+          $image_url .= "&crop_width=".$crop_width;
         }
 
-        if ($this->crop_h)
+        if ($crop_height)
         {
-          $image_url .= "&crop_h=".$this->crop_h;
+          $image_url .= "&crop_height=".$crop_height;
         }
 
-        if ($this->resize_w)
+        if ($resize_width)
         {
-          $image_url .= "&resize_w=".$this->resize_w;
+          $image_url .= "&resize_width=".$resize_width;
         }
 
-        if ($this->resize_h)
+        if ($resize_height)
         {
-          $image_url .= "&resize_h=".$this->resize_h;
+          $image_url .= "&resize_height=".$resize_height;
         }
-
 
         $image_url .= "&hash=".md5($this->private_key.$image_url);
         $image_url .= "&public_key=".$this->public_key;
